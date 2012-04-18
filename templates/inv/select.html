@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}select...{% endblock %}
+
+{% block css %}
+.aright					  {height: 100px;}
+.aright                   {text-align:right;}
+.aright                   {width: 770px;}
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+function showNewClient(){
+  var nc = document.getElementById("show_new_client")
+  if(nc.style.display == 'block'){nc.style.display = 'none';} else {nc.style.display = 'block';}}
+
+function errorCheck(){
+	document.getElementById("gd_error").style.display = 'none';
+	document.getElementById("gt_error").style.display = 'none';
+	document.getElementById("gc_error").style.display = 'none';
+	//var gd = document.getElementById("go_doc").value.length;
+	var gt = document.getElementById("go_type").value.length;
+	var gc = document.getElementById("go_contact").value.length;
+	flag = false;
+	//if (gd==0){document.getElementById("gd_error").style.display = 'block';flag=true;}
+	if (gt==0){document.getElementById("gt_error").style.display = 'block';flag=true;}
+	if (gc==0){
+		var gcn = document.getElementById("new_contact").value.length;
+			if (gcn==0){document.getElementById("gc_error").style.display = 'block';flag=true;}
+	}
+	if(flag==true){return false;}
+}
+
+fld.value.length == 0
+//function check1(dtype){dt=dtype.split("|");document.getElementById("go_doc").value=dt[1];}
+function check3(itype){it=itype.split("|");document.getElementById("go_type").value=it[1];}
+function check2(contact){ct=contact.split("|");document.getElementById("go_contact").value='Att: ' + ct[1];}
+</script>
+{% endblock %}
+
+{% block body %}
+<body>
+<p>
+<div class="aright">Choose:
+<div class="note">All these details can be changed later. This is just to get started...</div>
+</div>
+</p>
+<form id="docSelect" name="docSelect" method="post" action="." onSubmit="return errorCheck()">{% csrf_token %}
+<input  onclick="errorCheck()" name="select" type="submit" value="go ▶" class="go" /> <!-- &#8658; ➔ ▶ -->
+
+<table border="0" cellpadding="5" cellspacing="5">
+  <tr>
+    <td valign="top" rowspan="2">
+<h3>(1) Address it to:</h3>
+<input type="text" id="go_contact" size="40" class="select">
+<div class="error" id="gc_error" style="display:none;">( *** )</div>
+<label class="pre-select"><input type="radio" name="contact" id="contact" value="0" onClick="check2(this.value)"  /><span class="note">New. Not on the list.</span></label>
+{% for contact in contacts0 %}
+<label class="pre-select"><input type="radio" name="contact" id="contact" value="{{contact.id}}|{{contact.name}}" onClick="check2(this.value)" />{{contact.client.name}} - {{contact.name}}</label>{% endfor %}
+{% for contact in contacts %}
+<label class="pre-select"><input type="radio" name="contact" id="contact" value="{{contact.id}}|{{contact.name}}" onClick="check2(this.value)" />{{contact.client.name}} - {{contact.name}}</label>{% endfor %}
+    </td>
+    <td valign="top">
+<h3>(2) What for?</h3>
+<input type="text" id="go_type" size="35" class="select"></p>
+<div class="error" id="gt_error" style="display:none;">( *** )</div>
+{% for type in types %}
+<label class="pre-select"><input type="radio" name="itype" value="{{type.id}}|{{type.name}}" onClick="check3(this.value)" />{{type.name}}</label>
+{% endfor %}
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+<br />
+<br />
+<div style="opacity: 0.5; filter:alpha(opacity=50); -moz-opacity:0.5; display:block; background: #ddd; border: 1px dashed #aaa; padding:10px; margin-top: 30px;">
+<em><strong>FACILITY TO ADD NEW STILL UNDER CONSTRUCTION</strong></em>
+<div style="text-align:center;">doesn't work!!</div>
+<!-- register whole new generated everything before can move on to normal...  -->
+<p><strong>New contact</strong>?<br />
+Not on the list? <span class="click_here" onClick="showNewClient()">Click here.</span></p>
+
+<div id="show_new_client" style="display:none;">
+<input type="text" id="new_contact" size="35" class="select">
+<em><strong>Type in above</strong></em> and select the client below.
+<select class="pre-select" name="go_client" id="go_client" style="border:1px dashed #ccc;">
+<option></option>
+{% for client in clients %}
+  <option id="go_contact" value="{{client.id}}">{{client.name}}</option>
+{% endfor %}
+</select>
+<br />
+<p><strong>New client</strong>?<br />
+Not on the list? <strong>Type in below</strong>.
+Please put the <br />
+<em>proper and correct</em> name for the organisation. <br />
+The name that would go on an invoice:</p>
+<input type="text" id="new_client" size="35" class="select">
+</div>
+</p>
+</div>
+  	</td>
+  </tr>
+</table>
+
+
+</form>
+</body>
+{% endblock %}

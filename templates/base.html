@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{% block title %}cmqt{% endblock %}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="icon" type="image/png" href="/media/favicon.png" /> 
+<style>
+a,abbr,acronym,address,applet,b,big,body,caption,center,cite,code,dd,del,dfn,div,dl,dt,em,fieldset,font,form,html,i,iframe,img,input,ins,kbd,label,legend,li,object,ol,p,pre,q,s,samp,small,span,strike,strong,sub,sup,table,tbody,td,textarea,tfoot,th,thead,tr,tt,u,ul,var
+{margin:0;padding:0;border:0;outline:0;font-size:100%;background:transparent;}ol,ul{list-style: none;}
+
+body					{background:url('{{MEDIA_URL}}aew_graphic.jpg') no-repeat /*#ccc*/;}
+body                    {font-size: .9em;}
+body,input				{font-family:Arial, sans-serif;}
+.doc_box				{border:2px solid #111;}
+/*input,textarea		{border:1px dashed #aaa;}*/
+.clear					{clear:both}
+.grey_text 				{color: #666666}
+a:link, a:visited 		{color: #888888;}
+.hdr_float				{color: #999999;}
+a:hover 				{color: #aaaaaa;}
+#btm_bank_det,.add1,.add2
+						{float: left;}
+.time_table				{float: right;}				
+.hdr_float				{font-size:small;}
+#btm_nb					{font-size:11px;}
+h1						{font-size:18px;}
+#box_hdr				{font-size: 1.1em;}
+#hdr_sub				{font-style:italic;}
+.date,.org,#box_hdr, #total
+						{font-weight:bold;}
+.doc_total,.date_float	{line-height:1.3;}
+h3						{margin:0;}
+input					{margin: 1px 0;}
+.date_float				{margin: 190px 45px 0px 0px;}
+.doc_box				{margin: 25px 0px 14px 0px;}
+#btm_nb					{margin-bottom: 20px;}
+.doc_box				{padding: 20px 24px 20px 18px;}
+.org					{padding: 0 0 5px 16px;}
+h1						{padding-left: 10px;}
+h2, #hdr_sub, .contact, .org, .add1
+						{padding-left: 16px;}
+.add2					{padding-left: 75px;}
+.hdr_float,.content,.date_float
+						{position:absolute;}
+.pty_ltd,#hdr_sub   	{position:relative; top:-15px;} /* co-dependant */
+.hdr_float,.date_float,.date,.reference
+						{text-align:right;}
+.go						{text-align:center;}
+a:link,a:visited 		{text-decoration:none;}
+.hdr_float				{top:0;}
+.content				{top:180px;}
+.hdr_float,.date_float	{width:366px; left:400px;} /* co-dependant */
+.main_header			{width:400px;}
+/*body					{width:793px;}*/
+.content				{width:733px; padding: 0 30px;} /* co-dependant */
+.content				{z-index: 10;}
+.hdr_float,.date_float	{z-index: 100;}
+
+.select               	  {background: #ccc;}
+.pre-select               {background: #eee;}
+.click_here               {background-color: #eee;}
+.click_here, .select {border: 1px dashed #aaa;}
+.pre-select,              {border: 1px dashed #ccc;}
+.pre-select, .select      {border-radius: .8em 0; -moz-border-radius: .8em 0;}
+.note                     {color: #999;}
+.error                    {color: #ee0000;}
+.pre-select, .select      {display:block;}
+.pre-select, .select      {font-size: 1em;}
+.note                     {font-style:italic;}
+.select                   {font-weight:bold;}
+
+.pre-select, .select      {margin: 5px 0;}
+.click_here               {margin-left: 5px;}
+.pre-select, .select      {padding: 3px 10px 4px 18px;}
+.click_here               {padding: 3px 2px;}
+
+.go   {background: #ddd;}		
+.go   {border-radius:0 .8em; -moz-border-radius: 0 .8em; border: 1px dashed #bbb;}
+.go   {color: #666;}		
+.go   {float:right;}		
+.go   {font-size:32px;}		
+.go   {height: 230px;}		
+.go   {opacity: 0.85; filter:alpha(opacity=85); -moz-opacity:0.85;}		
+.go   {right: 15px;}		
+.go   {top:425px;}		
+.save {top:180px;}		
+.go   {width: 130px;}		
+.go   {z-index: 1; position: absolute; } /* co */		
+
+{% block css %}{% endblock %}
+</style>
+{% block js %}{% endblock %}
+
+</head>
+{% block body %}{% endblock %}
+</html>
+
+

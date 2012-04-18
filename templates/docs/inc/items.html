@@ -1,0 +1,34 @@
+  <tr>{% load humanize %}
+    <td>
+<div class="item_total"><input type="text" name="0|item_total" tabindex="6" size="8" class="item_total item_header no_style" value="Service nett" ></div>
+<div class="item_each"><input type="text" name="0|item_each" tabindex="5" size="8" class="item_each item_header no_style" value="Each" ></div>
+<div class="item_qty"><input type="text" name="0|item_qty" tabindex="4" size="2" class="item_qty item_header no_style" value="Qty" ></div>
+<!-- 
+<div class="item_total item_header">Service nett</div>
+<div class="item_each item_header">Each</div>
+<div class="item_qty item_header">Qty</div>
+ -->
+    </td>
+  </tr>
+ 
+{% for item in items.invoiceitem_set.all %}
+{% if forloop.counter0 > 0 %}
+  <tr>
+    <td>
+<div class="item_h2"><input type="text" id="item_h2" name="{{forloop.counter}}|item_h2" size="55" class="item_h2" tabindex="1" value="{{item.title}}"></div>
+
+<span class="item_p"><input name="{{forloop.counter}}|item_p" class="item_p" size="50" tabindex="2" value="{{item.item|striptags}}"></span>
+<!-- 
+<textarea name="{{forloop.counter}}|item_p" class="item_p" cols="50" rows="3" tabindex="2">
+{{item.item|safe}}
+</textarea>
+<span class="item_li">box</span>
+<span class="item_li">bag</span>
+ -->
+<div class="item_total"><input type="text" id="item_total" name="{{forloop.counter}}|item_total" tabindex="6" size="8" class="item_total" value="{{item.nett|floatformat:2|intcomma}}" onblur="calcTotal()"></div>
+<div class="item_each"> <input type="text" id="item_each" name="{{forloop.counter}}|item_each" tabindex="5" size="8" class="item_each" value="{{item.each|floatformat:2|intcomma}}" onblur="calcTotal()"></div>
+<div class="item_qty">	<input type="text" id="item_qty" name="{{forloop.counter}}|item_qty" tabindex="4" size="2" class="item_qty" value="{{item.qty|floatformat:0}}" onblur="calcQty()"></div>
+    </td>
+  </tr>
+{% endif %}
+{% endfor %}

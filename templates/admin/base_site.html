@@ -1,0 +1,16 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }} | {% trans 'Django site admin' %}{% endblock %}
+
+{% block extrastyle %}
+<style>
+#header, #branding {background: url(/media/aew_graphic.jpg) no-repeat #ccc; height: 70px;}
+</style>
+{% endblock %}
+
+{% block branding %}
+<a href="/admin/" height="50" align="left" border="0" />&nbsp;</a>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>AEW-{{reference}}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+a,abbr,acronym,address,applet,b,big,body,caption,center,cite,code,dd,del,dfn,div,dl,dt,em,fieldset,font,form,html,i,iframe,img,input,ins,kbd,label,legend,li,object,ol,p,pre,q,s,samp,small,span,strike,strong,sub,sup,table,tbody,td,textarea,tfoot,th,thead,tr,tt,u,ul,var
+{margin:0;padding:0;border:0;outline:0;font-size:100%;background:transparent;}ol,ul{list-style: none;}
+body					{background:url('{{MEDIA_URL}}aew_graphic.jpg') no-repeat #ccc;}
+body,input,textarea		{font-family:Arial, sans-serif;}
+
+/* -- specific -- */
+.info 					{background:#FFDDCC;}
+input,.input_style		{background: #e4dad0 /*e4dfda /*eee9e4*/;}
+.doc_box				{border:2px solid #111;}
+input,textarea,.input_style
+						{border:1px dashed #b4a08c /*beaa96*/;}
+.info 					{border:1px solid #FFCCaa;}
+#go   					{border-radius:0 .8em; -moz-border-radius: 0 .8em;}
+.clear					{clear:both}
+.grey_text, #go			{color: #666666}
+a:link, a:visited 		{color: #888888;}
+.hdr_float				{color: #999999;}
+a:hover 				{color: #aaaaaa;}
+.info 					{color: #FF6633;}
+#btm_bank_det,.add1,.add2
+						{float: left;}
+.time_table,.inv_total,.item_total,.item_qty,.item_each,#go,.rmv_btn
+						{float: right;}
+.hdr_float				{font-size:small;}
+#aew_here				{font-size:10px;}
+#btm_nb					{font-size:11px;}
+body					{font-size:14px;}
+h1						{font-size:18px;}
+#go  					{font-size:32px;}
+#box_hdr				{font-size: 1.1em;}
+#hdr_sub				{font-style:italic;}
+.date,.org,.doc_tltx,.item_header,#box_hdr, #total,.item_h2
+						{font-weight:bold;}
+.row_head 				{height:40px;}
+.doc_total,.date_float	{line-height:1.3;}
+h3						{margin:0;}
+input					{margin: 1px 0;}
+.doc_total,.doc_tltx	{margin: 15px 0 0 0;}
+.date_float				{margin: 190px 45px 0px 0px;}
+.doc_box				{margin: 25px 0px 14px 0px;}
+#btm_nb					{margin-bottom: 20px;}
+.item_li,.item_p		{margin-left: 15px;}
+.org, .contact			{margin-left: 16px;}
+.org 					{margin-top: 5px;}
+#top_box, #go			{opacity: 0.8; filter:alpha(opacity=80); -moz-opacity:0.8;}
+#aew_here				{opacity: 0.6; filter:alpha(opacity=60); -moz-opacity:0.6;}
+#aew_here				{padding: 5px 0;}
+#top_box				{padding: 15px;}
+.doc_box				{padding: 20px 24px 20px 18px;}
+h1						{padding-left: 10px;}
+h2, #hdr_sub, .add1
+						{padding-left: 16px;}
+.add2					{padding-left: 75px;}
+.pty_ltd,#hdr_sub   	{position:relative; top:-15px;} /* co-dependant */
+#top_box				{text-align:left; }
+.item_qty,.item_each,#go,#aew_here
+						{text-align:center; }
+.hdr_float,.date_float,.inv_total,.item_total,.doc_total,.date,.reference
+						{text-align:right; }
+a:link,a:visited 		{text-decoration:none;}
+.hdr_float				{top:0;}
+.content,.save			{top:180px;}
+.go   					{top:425px;}		
+.item_qty				{width:55px;}
+.item_each 				{width:85px;}
+.item_total,.inv_total	{width:103px;}
+.main_header			{width:400px;}
+.org, .contact, .item_h2{width:425px;}
+.hdr_float,.date_float	{width:466px; left:300px;} /* co-dependant */
+#box_hdr				{width:685px;}
+body					{width:793px;}
+.content				{width:733px; padding: 0 30px;} /* co-dependant */
+#go   					{z-index: 1;  position:absolute;} /* co-dependant */
+.content				{z-index: 10; position:absolute;} /* co-dependant */
+.hdr_float,.date_float, .info
+						{z-index: 100;position:absolute;} /* co-dependant */
+
+.item_header:before {content: "\00B7\0020";} /* middot */
+.item_li:before     {content: "\2010";} /* hyphen */
+
+.add_btn_item {padding:5px 20px;}
+.rmv_btn	{padding-top:2px}
+
+.no_style, input, textarea {border: 0; background: none;}
+
+/* -- ids -- */
+#aew_here	{width: 110px; top: 15px; left: 225px;}
+#top_box	{width: 375px; top: 20px; left: -250px;}
+#go			{width: 130px; right: 15px; height: 230px; }		
+
+.bt{ display:none;}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
+<script src="{{MEDIA_URL}}js/cmqt.js" type="text/javascript"></script>
+</head>
+<body onload="calcTotal()">
+<span class="hdr_float">
+
+<div class="bt info" id="top_box">{{instruction.detail|safe}}</div>
+<div class="bt info" id="aew_here"><strong>click 'AEW Studios'</strong> &raquo;<br />to hide/show buttons</div>
+
+<h2><a href="#">AEW Studios</a></h2>
+{% include 'docs/ourdetails.html' %}</span>
+<form id="docPresent" name="docPresent" method="post" action="." onsubmit="return errorCheck()">{% csrf_token %}
+
+<input onclick="checkError()" name="present" type="submit" value="go ▶" class="bt go" id="go" /> <!-- &#8658; ➔ ▶ -->
+<input onclick="checkSave()" name="save" type="button" value="save ▶" class="bt save"  id="go" /> <!-- &#8658; ➔ ▶ -->
+
+<input name="itype" type="hidden" value="{{itype.pk}}" />
+<input name="inv_num" type="hidden" value="{{inv_num}}" />
+
+
+<div class="date_float">
+    <div class="date">
+    	Date: <input type="text" id="date" name="date" tabindex="0" size="8" class="date" value="{% if date|date:"j-M-Y" %}{{date|date:"j-M-Y"}}{% else %}{{date}}{% endif %}">
+    </div>
+    <div class="reference" >{% if dtype == 'i' %}Invoice{% endif %}{% if dtype == 'q' %}Quote{% endif %} Number: 
+    <input type="text" id="reference" name="reference" tabindex="0" size="13" class="reference" value="{{reference}}"></div> 
+</div>
+
+<div class="content">
+<h2 style="width:300px;">{% if dtype == 'i' %}TAX INVOICE{% endif %}{% if dtype == 'q' %}QUOTATION{% endif %}</h2>
+<!-- 
+<input type="text" id="hdr_sub" name="hdr_sub" size="142" value="25% deposit">
+-->
+{% include 'docs/contact.html' %}
+
+<div class="clear"></div>
+
+
+<div class="doc_box">
+<div><input id="box_hdr" name="box_hdr" type="text" value="SERVICES TO BE PROVIDED: Web Development - Extension" /></div>
+<br />
+<br />
+
+<table class="doc_table" width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>
+<input type="hidden" value="0" id="itemCount" />
+<input type="hidden" value="0" id="itemPlace" />
+<div id="0|items_place">
+<div class="item_total"><input type="text" class="item_total" id="item_total" name="0|item_total" value="$2,130" onblur="calcQty()"></div>
+<!-- <div class="item_each"><input type="text" class="item_each" id="item_each" name="0|item_each" value="$2,130" onblur="calcQty()"></div>
+     <div class="item_qty"><input type="text" class="item_qty" id="item_qty" name="0|item_qty" value="5" onblur="calcQty()"></div> -->
+<div class="item_header"><input type="text" class="item_h2" name="0|item_h2" value="Title Here"></div>
+<div id="0|item">
+  <span class="item_p"><textarea name="0|item_p" rows="1" cols="100" >Item here </textarea></span>
+  <span class="rmv_btn">
+  	<img onclick="removeElement('0|item')" src="{{MEDIA_URL}}icon_remove.png" width="15" height="15" class="bt" />
+  </span>
+</div>
+</div> <!-- end items_place -->
+<div><img class="bt add_btn_item" onclick="createDiv('item_p','0|items_place')" src="{{MEDIA_URL}}icon_add.png" width="15" height="15" /></div>
+<br />
+<br />
+
+    </td>
+  </tr>
+  <tr>
+    <td>
+<!-- is this drifing? does it need to be considered an 'item'? -->
+<p id="tcos"><input type="text" id="inv_tcos" size="60" value="Total Cost of Service: $ (inc 10% GST)"></p>
+<!--
+<p>
+<div class="doc_tltx" id="qte_turn">Turnover Time: 24 hours</div>
+<div id="qte_ret">To be supplied to Schawk on morning Thurs, 4 March 2010.</div>
+</p>
+-->
+    </td>
+  </tr>
+  <tr>
+    <td>
+<div class="doc_total">
+<div class="inv_total">
+<div id="nett"> <input type="text" id="inv_nett" name="inv_nett" size="7" class="inv_total" value="$ 0.00"></div>
+<div id="gst">  <input type="text" id="inv_gst" name="inv_gst" size="7" class="inv_total" value="$ 0.00"></div>
+<div id="total"><input type="text" id="inv_total" name="inv_total" size="7" class="inv_total" style="font-weight:bold" value="$ 0.00"></div>
+</div>
+Invoice Nett: <br />
+GST:<br />
+<strong>TOTAL AMOUNT OF THIS INVOICE (including GST):</strong>
+</div>
+    </td>
+  </tr>
+
+
+{% comment %}
+{% if item.item %}
+{% endif %}
+
+{% include 'docs/items/items_3d-qty.html' %}
+{% include 'docs/content.html' %}
+{% include item_template %}
+{% endcomment %}
+</table>
+</div><!-- end doc_box -->
+
+{% if dtype == 'q' %}
+<div id="btm_nb">
+<p>*Quote valid for 3 months only - please contact Antony on 0433 871 421 or email antony@aewstudios.com to confirm that you would like to go ahead and for further specifications as are required for commencement.</p>
+</div>
+{% endif %}
+
+{% comment %}
+{% if dtype == 'i' %}
+<div><input type="text" id="btm_nb" name="btm_nb" size="142" value="*For complex or animated jobs request a specific quote and supply reference materials. These prices should be used as an indication only."></div>{% endif %}
+{% endcomment %}
+
+<div class="time_table">
+  <table border="0" style="margin-left:10px;">
+    <tr>
+      <td colspan="3"><strong>Payment Schedule</strong></td>
+    </tr>
+    <tr>
+      <td width="235">[1] <strong>Deposit</strong>: (March 2010)</td>
+      <td width="25">30%</td>
+      <td width="75"><div align="right">$2,286.90</div></td>
+    </tr>
+    <tr>
+      <td>[2] <strong>Milestone I</strong> (~May/June 2010):</td>
+      <td>20%</td>
+      <td><div align="right">$1,524.60</div></td>
+    </tr>
+    <tr>
+      <td>[3] <strong>Milestone II</strong> (~June/July 2010):</td>
+      <td>20%</td>
+      <td><div align="right">$1,524.60</div></td>
+    </tr>
+    <tr>
+      <td>[4] <strong>Final</strong> (~July/Aug 2010):</td>
+      <td>30%</td>
+      <td><div align="right">$2,286.90</div></td>
+    </tr>
+  </table>
+</div>
+
+<div id="btm_bank_det">
+Payments can be made by:<br>
+&middot; Cheque addressed to &quot;AEW Studios&quot;<br>
+&middot; Direct Deposit to:<br>
+<strong>&nbsp;&nbsp;Account Name: </strong><br>
+aew studios<br>
+<strong>&nbsp;&nbsp;BSB:</strong><br>
+112-879<br>
+<strong>&nbsp;&nbsp;Account Number:  </strong><br>
+464152731
+</div>
+
+<!-- 
+<textarea name="btm_bank_det" id="btm_bank_det" cols="50" rows="10" tabindex="2"></textarea>
+-->
+
+</div> <!-- end content -->
+</form>
+
+</body>
+</html>
+
+{% comment %}
+## Edit drop-down attempt. Might have swiftly and elegantly have been rendered obsolete.
+
+.edit_form
+#edit{
+position: relative;
+opacity: 0.75; filter:alpha(opacity=75); -moz-opacity:0.75;
+float: right;
+z-index:100;}
+
+.edit img:hover{
+opacity: 1; filter:alpha(opacity=100); -moz-opacity:1;}
+
+<script type="text/javascript">
+function showEdit(id){
+f=document.getElementById(id);
+if(f.style.display == 'block'){f.style.display = 'none';} else {f.style.display = 'block';}
+}
+</script>
+<span id="edit"><img src="{{MEDIA_URL}}change.png" onclick="showEdit('btm_bank_det')" >&nbsp;<img src="{{MEDIA_URL}}remove.png"></span>
+<div id="btm_bank_det" style="display:none;">
+<span id="edit"><img src="{{MEDIA_URL}}change.png" onclick="showEdit('btm_bank_det')" >&nbsp;<img src="{{MEDIA_URL}}remove.png"></span>
+testing here
+</div>
+
+<script type="text/javascript">
+function showEdit(ci){
+var ca = document.getElementById(ci);
+var ch=ca.childNodes;
+for(var i=0;i<ch.length;i++)
+{
+alert(ch[i].style);
+//if(ch[i].style.display == 'none'){ch[i].style.display = 'block';} else {ch[i].style.display = 'none';}
+//DOMstring+=ch[i].nodeName+'\n';
+}
+}
+
+</script>
+ onclick="showEdit('btm_bank_det')"
+
+{% endcomment %}
+{% comment %}
+<br />
+|{{test}}|<br />
+<br />
+|mtest: {{mtest}}|
+<br /><br />
+|ttest: {{ttest}}|
+<br /><br />
+{% for t in test %}
+{{t}}<br />
+{% endfor %}
+<br />
+<br />
+{{request}}
+{% for r in request %}
+{{r}}<br />
+{% endfor %}
+{{request}}
+{% endcomment %}
+{% comment %}
+{% for meta in items.invoicemeta_set.all %}
+{{meta.choice}}
+{% if meta.choice == "box_hdr" %}{{meta.detail|safe}}{% endif %}
+{% endfor %}
+
+<input type="text" id="box_hdr" name="box_hdr" size="40" value="
+{% for meta in items.invoicemeta_set.all %}
+{% if meta.choice == 'hdr_box' %}{{meta.detail|safe}}{% endif %}
+{% endfor %}">
+{% endcomment %}

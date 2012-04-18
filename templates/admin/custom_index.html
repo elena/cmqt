@@ -1,0 +1,86 @@
+{% extends "admin/index.html" %}
+
+{% block content %}
+<div id="content-main"> 
+<h1>Site administration</h1>
+ 
+<style> 
+.guide_text{
+	color: #aaa;
+	font-size: .85em;
+	padding: 0px 0px 5px 6px;
+}
+.cat_link{color:#93a3b8;}/*#8196b2;}*/
+.cat_link:hover{color:#444;}
+
+</style> 
+
+{% for section in app_list %}
+{% if section.desc %} {# spacer option #}
+<h4>{{section.desc|upper}}</h4> 
+<div class="guide_text">{{section.helper_text}}</div>
+  {% for app in section.indexapp_set.all %}
+    <div class="module"> 
+        <table summary="Models available in the {{app.header|title}} application.">
+        <caption>{{app.header|title}}</caption> 
+            <tbody> 
+    {% for object in app.indexcustom_set.all %}
+		{% if object.model %} {# spacer option #}
+                <tr> 
+                    <th scope="row">
+                    <a href="{% if object.other_link %}{{object.other_link|lower}}{% else %}/admin/{{app.header}}/{{object.model|cut:" "|lower}}/{% endif %}">{% if object.shaded %}<span class="cat_link">{% endif %}{% if object.alt_name %}{{object.alt_name}}{% else %}{{object.model|title}}s{% endif %}{% if object.shaded %}</span>{% endif %}</a>{% if object.spec_msg %}&nbsp;&nbsp;&nbsp;<span class="guide_text">({{object.spec_msg}})</span>{% endif %}</th> 
+                    <td>
+                    <a href="{% if object.other_link %}{{object.other_link}}{% else %}/admin/{{app.header}}/{{object.model|cut:" "}}/add/{% endif %}" class="addlink">{% if object.shaded %}<span class="cat_link">{% endif %}Add{% if object.shaded %}</span>{% endif %}</a></td> 
+                    <td>
+                    <a href="{% if object.other_link %}{{object.other_link}}{% else %}/admin/{{app.header}}/{{object.model|cut:" "}}/{% endif %}" class="changelink">{% if object.shaded %}<span class="cat_link">{% endif %}Change{% if object.shaded %}</span>{% endif %}</a></td> 
+                </tr> 
+		{% else %} {# spacer option #}
+                <tr> 
+                	<td headers="1" colspan="3"></td>
+                </tr> 
+        {% endif %} {# spacer option #}
+    {% endfor %}
+            </tbody> 
+        </table> 
+    </div> 
+  {% endfor %}
+<p>&nbsp;</p>
+{% else %} {# spacer option #}
+<p>&nbsp;</p>
+{% endif %} {# spacer option #}
+{% endfor %}
+
+</div><!-- end: content-main -->
+
+
+{% endblock %}
+
+{% block sidebar %}
+<br /><br />
+<div id="content-related">
+{% comment %} 
+<h3>Admin Tasks:</h3>
+<br />
+<h1><a href="/admin/ad_check/">Ad Checking</a></h1>
+<h4><a href="/admin/ad_check/">See tests and details ...</a></h4>
+<div class="module" id="recent-actions-module"> 
+    <h2>Current Live Ads:</h2>
+    
+    <ul class="actionlist"> 
+    {% for a in w %}
+    {% ifchanged a.ad_size %}
+        <h3 style="margin-left:-10px;">{{a.ad_size.name|title}}</h3> 
+    {% endifchanged %}
+        <li style="margin-left:10px;"> 
+            <a href="/admin/ads/ad/{{a.id}}//">{{a.name}}</a><br/> 
+            <span class="mini quiet">start: {{a.show_start|date:"d-M-Y"}} | end:  {{a.show_end|date:"d-M-Y"}}</span> 
+        </li> 
+    {% endfor %}
+    </ul>
+</div>
+<br />
+<hr />
+<br />
+{% endcomment %} 
+</div>
+{% endblock %}

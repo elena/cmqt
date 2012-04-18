@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block css %}
+.go {height: 27px;}
+.row {height: 18px;}
+.go {position: inherit;}
+.go {float: inherit;}
+.go {font-size: 1.4em;}
+.go {width: 200px;}
+.row {padding-top: 6px;}
+.row {background: #eee;}
+.row {border: 1px dashed #ccc;}
+.row {border-radius: .8em 0; -moz-border-radius: .8em 0;}
+.row {padding: 1px 2px;}
+
+.little_bt{font-size: 9px; border: 1px dashed #bbb; color: #999; background: #f3f3f3;}
+.little_tx{font-size: 10px;}
+
+.click_here {float:right;margin-top: -4px;}
+
+.go {position:relative; top:0; margin: 10px 20px; width:250px; padding: 3px 0 0 0;}
+
+.post_select {opacity: 0.6; filter:alpha(opacity=60); -moz-opacity:0.6;}
+.stage {opacity: 0.95; filter:alpha(opacity=90); -moz-opacity:0.9;}
+.stage {font-size:.7em; margin: 0px 2px; padding: 0px 4px; }
+.stage1, .stage2, .stage3 {padding: 2px; opacity: 0.7; filter:alpha(opacity=70); -moz-opacity:0.7; }
+.stage1 {background-color:#ffe5cc; border: 1px dashed #FFCC99}
+.stage2 {background-color:#e5e5ff; border: 1px dashed #CCCCFF}
+.stage3 {background-color:#e5ffe5; border: 1px dashed #CCFFCC}
+.post_input {font-weight:normal; border: 1px dashed #aaa; background-color: #f9f9f9; font-size:.9em; padding:2px; color:#333;}
+.post_submit {border: 1px dashed #c7c7c7; background-color: #ddd;}
+.small_grey{font-size:.70em; color:#666; margin-left: 10px;}
+
+.hide {display:none;}
+{% endblock %}
+
+
+{% block body %}
+<script src="{{MEDIA_URL}}js/jquery.min.js" type="text/javascript"></script>
+<script>
+$(document).ready(function(){
+	$(".show").click(function(event){
+		$(".hide").toggle("fast"); 
+	});
+	//$(".hide").click(function(event).toggle("fast"));
+});
+</script>
+<body>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table border="0">
+  <tr> 
+    <td width="50%">
+<!-- RHS column part I -->
+<h3>Control Panel</h3>
+<p>
+<div class="go"><a href="/new/doc/">new general invoice &raquo;</a></div>
+<div class="go"><a href="/doc/schawk">new Schawk invoice &raquo;</a></div>
+<br>
+</p>
+
+<h3>Invoice Outstanding</h3>
+<br>
+<span class="post_submit" style="margin: 5px 0; padding:5px;">Total Oustanding: <strong>${{oustanding.total__sum|floatformat:2|intcomma}}</strong></span><br>
+<br>
+
+<table border="0" width="100%" style="font-size:.9em;">
+  <tr style="font-weight:bold;">
+    <td class="row" align="center">Invoice</td>
+    <td class="row" align="center">Date</td>
+    <td class="row" align="center">Client</td>
+    <td class="row" align="center">Amount</td>
+    <td class="row" align="center">Paid</td>
+  </tr>
+{% for object in paid_list %}
+  <tr>
+    <td class="row" align="center"><a href="/doc/{{object}}">{{object}}</a></td>
+    <td class="row" align="right">{{object.date|date:"j-M-Y"}}</td>
+    <td class="row"><a href="/doc/{{object}}">{{object.contact.client}}</a></td>
+    <td class="row" align="right">${{object.total}}</td>
+    <td class="row">
+<form id="paid_select" method="post" action="." >{% csrf_token %}
+  <input name="paid" class="post_submit little_bt" style="font-size:.85em" type="submit" value="paid" />
+  <input name="pk" type="hidden" value="{{object.pk}}">
+  <input type="text" class="post_input date" id="date" name="date" tabindex="0" size="9" value="{{today|date:"j-M-Y" }}">
+</form>     
+	</td>
+  </tr>
+{% endfor %}
+</table>
+
+    </td>
+    <td width="50%" valign="top">    
+<!-- LHS part I -->
+<h3>Current Jobs</h3>
+<div class="hide">
+<div class="small_grey"> add new job below:</div>
+<form id="job" method="post" action="." style="font-size:.9em; opacity: 0.7; filter:alpha(opacity=70); -moz-opacity:0.7;" >{% csrf_token %}
+<select name="contact" class="post_input post_select" style="border: 1px dashed #ccc;">
+{% for contact in contact_list %}<option value="{{contact.pk}}" class="post_input">{{contact}}</option>{% endfor %}
+</select>
+<input type="text" class="post_input post_select" name="name" tabindex="0" size="40" value="job description">
+<input name="stage" class="post_select post_submit" style="font-size:.9em" type="submit" value="add job" />
+</form>
+<div class="small_grey"><a href="/admin/contacts/contact/add/" target="_blank">add contact (click here)</a> |  <a href="/admin/jobs/" target="_blank">manage jobs (click here)</a></div>
+</div>
+<table border="0" width="100%">
+{% for jobs in job_list %}
+<tr><td>
+<table width="100%" style="padding:5px; background-color: #efefef; border: 1px dashed ccc;">
+  <tr>
+    <td colspan="3">
+<strong><a href="/admin/jobs/job/{{jobs.pk}}/" target="_blank" style="color:#111">{{jobs.name}}</a></strong>
+<span style="float:right; font-size:.8em;" class="show"><a>+/-</a></span>
+{% for stage in jobs.jobstage_set.all %}
+<form id="job_done" method="post" action="." >{% csrf_token %}
+    {% if forloop.first %}<p class="hide" style="font-size:.85em; margin: 3px 0;"><strong>Currently</strong>:{% endif %}
+	{% if stage.live = 1 %}
+<div style="font-size:.9em;">&raquo; <strong style="font-size:.85em;"><em>{{stage.detail}}:</em></strong> {{stage.notes}}{% if stage.owner %} (<em>{{stage.owner}}</em>){% endif %} &nbsp; 
+<input name="done" class="little_bt" style="font-size:.8em" type="submit" value="done" />
+<input name="job" type="hidden" value="{{jobs.pk}}">
+<input name="pk" type="hidden" value="{{stage.pk}}"></div>
+	{% endif %}
+    {% if forloop.last %}</p>{% endif %}
+</form>
+{% endfor %}
+    </td>
+  </tr>
+  <tr class="hide">
+  {% for stage in jobs.jobstage_set.all|dictsort:"phase" %}
+	{% ifchanged stage.phase %}   
+    {% if not forloop.first %}</td>{% endif %}
+	<td class="stage{{stage.phase}}" valign="top">
+<div style="clear:both; font-size:.78em;">
+{% if stage.phase = '1' %}Early Stage{% endif %}
+{% if stage.phase = '2' %}Main Body{% endif %}
+{% if stage.phase = '3' %}Final Stage{% endif %}
+</div>
+{% endifchanged %}
+<div class="stage"><a href="/admin/jobs/job/{{jobs.pk}}/" target="_blank">&raquo; {{stage.detail|upper}}{% if stage.notes %} ({{stage.notes|truncatewords:9}}){% endif %}</div>
+    {% if forloop.last %}</a></td>{% endif %}
+    {% if forloop.last %}   
+    {% endif %}
+  {% endfor %}
+  </tr>
+  <tr class="hide">
+      <td colspan="3" style="font-size:.85em">
+<form id="job_stage" method="post" action="." >{% csrf_token %}
+<input name="pk" type="hidden" value="{{jobs.pk}}">
+<select name="phase" class="post_input post_select" style="border: 1px dashed #ccc;">
+  <option class="post_input" value="1">Stage 1 -- Early  </option>
+  <option class="post_input" value="2">Stage 2 -- Main  </option>
+  <option class="post_input" value="3">Stage 3 -- Final &nbsp; </option>
+</select>
+<select name="detail" class="post_input post_select" style="border: 1px dashed #ccc;">
+  <option class="post_input" value="n/a">---</option>{%for detail in job_short%}{% ifchanged detail.detail %}
+  <option class="post_input" value="{{detail.detail}}">{{detail.detail}} &nbsp; </option>{% endifchanged %}{% endfor %}
+</select>
+<input type="text" class="post_input post_select" name="desc" tabindex="0" size="50" value="new stage long description">
+<input name="stage" class="post_select post_submit" style="font-size:.9em" type="submit" value="add stage" />
+</form>
+      </td>
+  </tr>
+
+</table>
+</td></tr>
+{% endfor %}
+</table>
+
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+<!-- LHS column part II -->
+{% comment %}
+
+{% endcomment %}
+
+    </td>
+    <td valign="top">
+<!-- RHS column part II -->
+<h3>&nbsp;</h3>
+<h3>Webhosting Invoices to be Sent</h3>
+{% if new_host > 0 %}
+<div class="pre-select" style="margin: 4px 0;">
+There are <strong>{{new_host|length}}</strong> invoices due to be generated. Th{{new_host|pluralize:"is is,ese are"}}:<br><br>
+
+<p>
+<form id="gen_select" method="post" action="." >{% csrf_token %}
+{% for k, x in new_host.items %}
+{% for h in x %}
+{% if forloop.first %}
+&nbsp;<input name="{{h.pk}}|gen_select" value="generate" type="submit" class="little_bt"> <strong>{{h.contact.client}}</strong> <a href="/admin/recurs/recur/{{h.pk}}/" title="click to change"><span class="little_tx">att: {{h.contact}} ({{h.interval}} at ${{h.amount}}/month)</span></a>
+{% else %}<div style="font-size:9px;">{{h}}</div>
+{% endif %}
+{% endfor %}
+{% endfor %}</form>
+</p>
+<br>
+
+{%comment%}
+<p>{{next_due}}</p>
+</div>
+<script type="text/javascript">function submitform(){document.gen_all.submit();}</script> 
+<form id="gen_all" method="post" action="." >{% csrf_token %}
+    <input name="gen_all" type="hidden" value="generate all &raquo;">
+    <input class="go" value="generate all &raquo;" type="submit">
+    <div><a href="javascript:submitform()">generate all &raquo;</a></div>
+</form> 
+{%endcomment%}
+
+{% else %}
+<div style="opacity: 0.5; filter:alpha(opacity=50); -moz-opacity:0.5; display:block; background: #ddd; border: 1px dashed #aaa; padding:10px; margin-top: 30px;">
+<em><strong>FACILITY TO ADD NEW STILL UNDER CONSTRUCTION</strong></em>
+<div class="pre-select" style="margin: 4px 0;">Next invoices will be due <strong><em>(date to go here)</em></strong>.</div>
+</div>
+{% endif %}
+
+<table border="0" width="100%" style="font-size:.9em;">
+  <tr style="font-weight:bold;">
+    <td class="row" align="center">Invoice</td>
+    <td class="row" align="center">Date</td>
+    <td class="row" align="center">Client</td>
+    <td class="row" align="center">Amount</td>
+    <td class="row" align="center">Sent</td>
+  </tr>
+{% for object in object_list %}
+  <tr>
+    <td class="row" align="center"><a href="/doc/{{object}}">{{object}}</a></td>
+    <td class="row" align="right">{{object.date|date:"j-M-Y"}}</td>
+    <td class="row"><a href="/doc/{{object}}">{{object.contact.client}}</a></td>
+    <td class="row" align="right">${{object.total}}</td>
+    <td class="row">
+<form id="sent_select" method="post" action="." >{% csrf_token %}
+  <input name="sent" class="post_submit little_bt" style="font-size:.85em" type="submit" value="sent" />
+  <input name="pk" type="hidden" value="{{object.pk}}">
+  <input type="text" class="post_input" id="date" name="date" tabindex="0" size="9" class="date" value="{{today|date:"j-M-Y"}}">
+</form>
+	</td>
+  </tr>
+{% endfor %}
+</table>
+   
+    </td>
+  </tr>
+</table>
+</body>
+{% endblock %}

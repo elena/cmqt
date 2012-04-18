@@ -1,0 +1,104 @@
+{% load humanize %}
+  <tr>
+    <td>
+<div class="item_total"><input type="text" name="0|item_total" tabindex="6" size="8" class="item_total item_header" value="Service nett" ></div>
+<div class="item_each"><input type="text" name="0|item_each" tabindex="5" size="8" class="item_each item_header" value="Each" ></div>
+<div class="item_qty"><input type="text" name="0|item_qty" tabindex="4" size="2" class="item_qty item_header" value="Qty" ></div>
+    </td>
+  </tr>
+ 
+{% for item in items.invoiceitem_set.all %}
+{% if forloop.counter0 != 0 %}
+  <tr>
+    <td>
+<div class="item_h2"><input type="text" id="item_h2" name="{{forloop.counter}}|item_h2" size="55" class="item_h2" tabindex="1" value="{{item.title}}"></div>
+
+<span class="item_p"><input name="{{forloop.counter}}|item_p" class="item_p" size="50" tabindex="2" value="{{item.item}}"></span>
+
+
+<div class="item_total"><input type="text" id="item_total" name="{{forloop.counter}}|item_total" tabindex="6" size="8" class="item_total" value="{{item.nett}}" onblur="calcTotal()"></div>
+<div class="item_each"> <input type="text" id="item_each" name="{{forloop.counter}}|item_each" tabindex="5" size="8" class="item_each" value="{{item.each}}" onblur="calcTotal()"></div>
+<div class="item_qty">	<input type="text" id="item_qty" name="{{forloop.counter}}|item_qty" tabindex="4" size="2" class="item_qty" value="{{item.qty}}" onblur="calcQty()"></div>
+    </td>
+  </tr>
+{% endif %}
+{% endfor %}
+<!-- END -->
+
+{% comment %}
+{% load humanize %}
+
+<span class="item_li"><input name="{{forloop.counter}}|item_li" class="item_li" size="50" tabindex="2" value="{{item.item|striptags}}"></span>
+<div class="item_total"><input type="text" id="item_total" name="{{forloop.counter}}|item_total" tabindex="6" size="8" class="item_total" value="{{item.nett|floatformat:2|intcomma}}" onblur="calcTotal()"></div>
+<div class="item_each"> <input type="text" id="item_each" name="{{forloop.counter}}|item_each" tabindex="5" size="8" class="item_each" value="{{item.each|floatformat:2|intcomma}}" onblur="calcTotal()"></div>
+<div class="item_qty">	<input type="text" id="item_qty" name="{{forloop.counter}}|item_qty" tabindex="4" size="2" class="item_qty" value="{{item.qty|floatformat:0}}" onblur="calcQty()"></div>
+
+{% for item in items.invoiceitem_set.all %}
+  <tr>
+    <td>
+{% if item.title %}
+<div class="item_h2"><input type="text" id="item_h2" name="{{forloop.counter}}|item_h2" size="55" class="item_h2" tabindex="1" value="{{item.title}}"></div>{% endif %}
+
+{% if item.item %}
+<span class="item_li"><input name="{{forloop.counter}}|item_li" class="item_li" size="50" tabindex="2" value="{{item.item|striptags}}"></span>{% endif %}
+
+{% if item.nett %}
+<div class="item_total"><input type="text" id="item_total" name="{{forloop.counter}}|item_total" tabindex="6" size="8" class="item_total" value="{{item.nett}}" onblur="calcTotal()"></div>{% endif %}
+
+{% if item.each %}
+<div class="item_each"> <input type="text" id="item_each" name="{{forloop.counter}}|item_each" tabindex="5" size="8" class="item_each" value="{{item.each}}" onblur="calcTotal()"></div>{% endif %}
+
+{% if item.qty %}
+<div class="item_qty">	<input type="text" id="item_qty" name="{{forloop.counter}}|item_qty" tabindex="4" size="2" class="item_qty" value="{{item.qty}}" onblur="calcQty()"></div>{% endif %}
+    </td>
+  </tr>
+{% endfor %}
+
+<!-- 
+<textarea name="{{forloop.counter}}|item_p" class="item_p" cols="50" rows="3" tabindex="2">
+{{item.item|safe}}
+</textarea>
+<span class="item_li">box</span>
+<span class="item_li">bag</span>
+ -->
+ 
+<div style="margin-top:-8px;">
+<span class="item_li"><input name="{{forloop.counter}}|item_li" class="item_li" size="50" tabindex="2" value="{{item.item|striptags}}"></span>
+
+<!-- 
+<textarea name="item_p" name="{{forloop.counter}}|item_p" class="item_p" cols="50" rows="3" tabindex="2">
+{{item.item|safe}}
+</textarea>
+<span class="item_li">box</span>
+<span class="item_li">bag</span>
+ -->
+
+<div class="item_total"><input type="text" id="item_total" name="{{forloop.counter}}|item_total" tabindex="6" size="8" class="item_total" value="{{item.nett}}"></div>
+<div class="item_each"> <input type="text" id="item_each" name="{{forloop.counter}}|item_each" tabindex="5" size="8" class="item_each" value="{{item.each}}" onblur="calcTotal()"></div>
+<div class="item_qty">	<input type="text" id="item_qty" name="{{forloop.counter}}|item_qty" tabindex="4" size="2" class="item_qty" value="{{item.qty|floatformat:0}}" onblur="calcQty()"></div>
+</div><br />
+{% endcomment %}
+
+
+
+{% comment %}
+{% for item in items.invoiceitem_set.all %}
+  <tr>
+    <td>
+{% if item.title %}
+<div class="item_h2"><input type="text" id="item_h2" name="{{forloop.counter}}|item_h2" size="55" class="item_h2" tabindex="1" value="{{item.title}}"></div>{% endif %}
+
+{% if item.item %}
+<span class="item_li"><input name="{{forloop.counter}}|item_li" class="item_li" size="50" tabindex="2" value="{{item.item|striptags}}"></span>{% endif %}
+
+{% if item.nett %}
+<div class="item_total"><input type="text" id="item_total" name="{{forloop.counter}}|item_total" tabindex="6" size="8" class="item_total" value="{{item.nett}}" onblur="calcTotal()"></div>{% endif %}
+
+{% if item.each %}
+<div class="item_each"> <input type="text" id="item_each" name="{{forloop.counter}}|item_each" tabindex="5" size="8" class="item_each" value="{{item.each}}" onblur="calcTotal()"></div>{% endif %}
+
+{% if item.qty %}
+<div class="item_qty">	<input type="text" id="item_qty" name="{{forloop.counter}}|item_qty" tabindex="4" size="2" class="item_qty" value="{{item.qty}}" onblur="calcQty()"></div>{% endif %}
+    </td>
+  </tr>
+{% endcomment %}

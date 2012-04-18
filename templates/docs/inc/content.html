@@ -1,0 +1,36 @@
+  <tr>{% load humanize %}
+    <td>
+<blockquote>
+<div class="po_aew"><input type="text" id="po_aew" name="po_aew" size="50" class="po_aew" value="{% if po_aew %}{{po_aew.detail|safe}}{% else %}AEW studios quote: SCHAWK100120{% endif %}"></div>
+<!-- AEW studios quote: SCHAWK09120 -->
+<div class="po_ct"><input type="text" id="po_ct" name="po_ct" size="50" class="po_swk" value="{% if po_ct %}{{po_ct.detail|safe}}{% else %}Schawk purchase order number: 1750121{% endif %}"></div>
+<!-- Schawk purchase order number: 17501 -->
+</blockquote>
+    </td>
+  </tr>
+  <tr>
+    <td>
+<!-- is this drifing? does it need to be considered an 'item'? -->
+<p id="tcos"><input type="text" id="inv_tcos" size="60" value="Total Cost of Service: $ (inc 10% GST)"></p>
+<!--
+<p>
+<div class="doc_tltx" id="qte_turn">Turnover Time: 24 hours</div>
+<div id="qte_ret">To be supplied to Schawk on morning Thurs, 4 March 2010.</div>
+</p>
+-->
+    </td>
+  </tr>
+  <tr>
+    <td>
+<div class="doc_total">
+<div class="inv_total">
+<div id="nett"> <input type="text" id="inv_nett" name="inv_nett" size="8" class="inv_total" value="$ 0.00"></div>
+<div id="gst">  <input type="text" id="inv_gst" name="inv_gst" size="8" class="inv_total" value="$ 0.00"></div>
+<div id="total"><input type="text" id="inv_total" name="inv_total" size="8" class="inv_total" style="font-weight:bold" value="$ 0.00"></div>
+</div>
+Invoice Nett: <br />
+GST:<br />
+<strong>TOTAL AMOUNT OF THIS INVOICE (including GST):</strong>
+</div>
+    </td>
+  </tr>

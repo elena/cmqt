@@ -1,0 +1,33 @@
+to be sent:
+<br>
+<form id="sent_select" method="post" action="." >{% csrf_token %}
+<table border="1" width="100%" style="font-size:.9em;">
+  <tr style="font-weight:bold;">
+    <td class="row" align="center">Invoice</td>
+    <td class="row" align="center">Date</td>
+    <td class="row" align="center">Client</td>
+    <td class="row" align="center">Period</td>
+    <td class="row" align="center">Amount</td>
+    <td class="row" align="center">Sent</td>
+  </tr>
+{% for object in object_list %}
+  <tr>
+    <td class="row" align="center"><a href="/doc/{{object}}">{{object}}</a></td>
+    <td class="row" align="center">{{object.date}}</td>
+    <td class="row"><a href="/doc/{{object}}">{{object.contact.client}}</a></td>
+    {% if object.recurinstance_set.count == 0 %}
+    <td></td>
+    {% endif %}
+    {% for d in object.recurinstance_set.all%}{% if forloop.counter = 1 %}
+    <td class="row" align="center">{{d.cover_start|date:"j-M-y"}} - {{d.cover_end|date:"j-M-y"}}</td>
+    {% endif %}{% endfor %}
+    <td class="row" align="right">${{object.total}}</td>
+    <td class="row">
+  <input name="{{object.pk}}" type="checkbox" value="">
+  <!-- <input name="{{object.pk}}" type="submit" value="&raquo;" /> -->
+  <input name="{{object.pk}}|{{today}}" type="text" size="8" value="{{today|date:"d-M-Y"}}">     
+	</td>
+  </tr>
+{% endfor %}
+</table>
+</form>

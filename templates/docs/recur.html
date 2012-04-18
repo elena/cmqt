@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block css %}
+.go {height: 30px;}
+.row {height: 18px;}
+.go {position: inherit;}
+.go {float: inherit;}
+.go {font-size: 1.4em;}
+.go {width: 200px;}
+.row {padding-top: 6px;}
+.row {background: #eee;}
+.row {border: 1px dashed #ccc;}
+.row {border-radius: .8em 0; -moz-border-radius: .8em 0;}
+.row {padding: 1px 5px;}
+
+.little_bt{font-size: 9px; border: 1px dashed #bbb; color: #999; background: #f3f3f3;}
+.little_tx{font-size: 10px;}
+
+.click_here {float:right;margin-top: -4px;}
+{% endblock %}
+
+
+{% block body %}
+<body>
+<div style="height: 150px;"></div>
+
+<div class="content">
+<h3>webhosting invoices to be sent</h3>
+{% if new_host > 0 %}
+<div class="pre-select" style="margin: 4px 0;">
+There are <strong>{{new_host|length}}</strong> invoices due to be generated. Th{{new_host|pluralize:"is is,ese are"}}:<br><br>
+
+<p>
+{% for h in new_host %}<form id="gen_select" method="post" action="." >{% csrf_token %}
+&nbsp;<input name="{{h.pk}}|gen_select" value="generate" type="submit" class="little_bt"> <strong>{{h.contact.client}}</strong> <a href="/admin/recurs/recur/{{h.pk}}/"><span class="little_tx">att: {{h.contact}} ({{h.interval}} at ${{h.amount}}/month) <em>click to change</em></span></a><br>
+{% endfor %}</form>
+</p>
+<br>
+
+<p>
+{{next_due}}
+
+</p>
+</div>
+<form id="gen_all" method="post" action="." >{% csrf_token %}
+  <input name="gen_all" type="submit" value="generate all ▶" class="go" />
+</form> 
+{% else %}
+<div style="opacity: 0.5; filter:alpha(opacity=50); -moz-opacity:0.5; display:block; background: #ddd; border: 1px dashed #aaa; padding:10px; margin-top: 30px;">
+<em><strong>FACILITY TO ADD NEW STILL UNDER CONSTRUCTION</strong></em>
+<div class="pre-select" style="margin: 4px 0;">Next invoices will be due <strong><em>(date to go here)</em></strong>.</div>
+</div>
+{% endif %}
+<br>
+to be sent:
+<br>
+<table border="0" width="100%" style="font-size:.9em;">
+  <tr style="font-weight:bold;">
+    <td class="row" align="center">Invoice</td>
+    <td class="row" align="center">Date</td>
+    <td class="row" align="center">Client</td>
+    <td class="row" align="center">Period</td>
+    <td class="row" align="center">Amount</td>
+    <td class="row" align="center">Sent</td>
+  </tr>
+{% for object in object_list %}
+  <tr>
+    <td class="row" align="center"><a href="/doc/{{object}}">{{object}}</a></td>
+    <td class="row" align="center">{{object.date}}</td>
+    <td class="row"><a href="/doc/{{object}}">{{object.contact.client}}</a></td>
+    {% for d in object.recurinstance_set.all%}{% if forloop.counter = 1 %}
+    <td class="row" align="center">{{d.cover_start|date:"j-M-y"}} - {{d.cover_end|date:"j-M-y"}}</td>
+    {% endif %}{% endfor %}
+    <td class="row" align="right">${{object.total}}</td>
+    <td class="row">
+<form id="sent_select" method="post" action="." >{% csrf_token %}
+  <input name="{{object.pk}}" type="submit" value="&raquo;" />
+</form>     
+    	<span class="click_here">{{today}}</span>
+        
+	</td>
+  </tr>
+{% endfor %}
+</table>
+
+</div>
+</body>
+{% endblock %}

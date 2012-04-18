@@ -1,0 +1,20 @@
+{% if contact.name %}<div><input class="contact" name="contact" type="text" value="Att: {{contact.name}}" /></div>{% endif %}
+{% if contact.client %}<div><input class="org" name="org" type="text" value="{{contact.client.invoice_name}}" /></div>{% endif %}
+{% if contact.address_left %}
+<div class="add1">{{contact.address_left|safe}}</div>{% else %}
+<div class="add1">{{contact.client.address_left|safe}}</div>{% endif %}
+{% if contact.address_right %}
+<div class="add2">{{contact.address_right|safe}}</div>{% else %}
+<div class="add2">{{contact.client.address_right|safe}}</div>{% endif %}
+<input name="contact_id" type="hidden" value="{{contact.pk}}" />
+
+{% comment %}
+<!-- TD: no menus instance of tinyMCE ...
+{% if contact.address_left %}
+<div class="add1"><textarea name="add1" >{{contact.address_left|safe}}</textarea></div>{% else %}
+<div class="add1"><textarea name="add1" >{{contact.client.address_left|safe}}</textarea></div>{% endif %}
+{% if contact.address_right %}
+<div class="add2"><textarea name="add2" >{{contact.address_right|safe}}</textarea></div>{% else %}
+<div class="add2"><textarea name="add2" >{{contact.client.address_right|safe}}</textarea></div>{% endif %}
+ -->
+{% endcomment %}

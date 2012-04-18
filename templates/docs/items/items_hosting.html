@@ -1,0 +1,62 @@
+{% load humanize %}
+
+  <tr>
+    <td>
+<div class="item_total"><input type="text" name="0|item_total" tabindex="6" size="8" class="item_total item_header" value="Service nett" ></div>
+<div class="item_each"><input type="text" name="0|item_each" tabindex="5" size="8" class="item_each item_header" value="Each" ></div>
+<div class="item_qty"><input type="text" name="0|item_qty" tabindex="4" size="2" class="item_qty item_header" value="Qty" ></div>
+    </td>
+  </tr>
+ 
+{% for item in items.invoiceitem_set.all %}
+  <tr>
+    <td>
+{% if item.title %}
+<div class="item_h2"><input type="text" id="item_h2" name="{{forloop.counter}}|item_h2" size="55" class="item_h2" tabindex="1" value="{{item.title}}"></div>{% endif %}
+
+
+{% if item.item %}
+<span {% if item.css %}class='{{item.css}}'{% endif %}><input name="{{forloop.counter}}|item_p" {% if item.css %}class='{{item.css}}'{% else %}class="item_p"{% endif %} size="60" tabindex="2" value="{{item.item|striptags}}"></span>{% endif %}
+
+{% if forloop.counter = 1 %}
+<div class="item_total"><input type="text" id="item_total" name="{{forloop.counter}}|item_total" tabindex="6" size="8" class="item_total" value="{{items.nett}}" onblur="calcTotal()"></div>
+<div class="item_each"> <input type="text" id="item_each" name="{{forloop.counter}}|item_each" tabindex="5" size="8" class="item_each" value="{{item.each}}" onblur="calcTotal()"></div>
+<div class="item_qty">	<input type="text" id="item_qty" name="{{forloop.counter}}|item_qty" tabindex="4" size="2" class="item_qty" value="{{item.qty}}" onblur="calcQty()"></div>
+{% endif %}
+    </td>
+  </tr>
+{% endfor %}
+
+{% comment %}
+<!-- not necessary for hosting -->
+  <tr>
+    <td>
+<blockquote>
+<div class="po_aew"><input type="text" id="po_aew" name="po_aew" size="50" class="po_aew" value="AEW studios quote: SCHAWK091208"></div>
+<!-- AEW studios quote: SCHAWK09120 -->
+<div class="po_ct"><input type="text" id="po_ct" name="po_ct" size="50" class="po_swk" value="Schawk purchase order number: 1750121"></div>
+<!-- Schawk purchase order number: 17501 -->
+</blockquote>
+    </td>
+  </tr>
+  <tr>
+    <td>
+<p id="tcos"><input type="text" id="inv_tcos" size="60" value="Total Cost of Service: $ (inc 10% GST)"></p>
+    </td>
+  </tr>
+{% endcomment %}
+
+  <tr>
+    <td>
+<div class="doc_total">
+<div class="inv_total">
+<div id="nett"> <input type="text" id="inv_nett" name="inv_nett" size="8" class="inv_total" value="$ {{items.nett}}"></div>
+<div id="gst">  <input type="text" id="inv_gst" name="inv_gst" size="8" class="inv_total" value="$ {{items.gst}}"></div>
+<div id="total"><input type="text" id="inv_total" name="inv_total" size="8" class="inv_total" style="font-weight:bold" value="$ {{items.total}}"></div>
+</div>
+Due Now:<br />
+GST:<br />
+<strong>TOTAL AMOUNT OF THIS INVOICE (including GST):</strong>
+</div>
+    </td>
+  </tr>
